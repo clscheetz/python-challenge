@@ -1,6 +1,7 @@
 import os
 import csv
 
+
 # Set path
 csvpath = os.path.join("PyBank", "budget_data.csv")
 
@@ -16,8 +17,14 @@ with open(csvpath, newline="") as csvfile:
     totalMonths = 0
     netProfit = 0
     averageChange = 0
-    greatestIncrease = 0
-    greatestDecrease = 0
+    greatestIncrease = {
+        "date": "",
+        "amount": 0
+    }
+    greatestDecrease = {
+        "date": "",
+        "amount": 0
+    }
     totalProfitChange = 0
     previousMonthProfit = 0
 
@@ -32,27 +39,36 @@ with open(csvpath, newline="") as csvfile:
 
         # Sum total change in profit/loss for each month after the 1st month 
         if totalMonths > 0:
-            totalProfitChange = totalProfitChange + currentProfit - previousMonthProfit
+
+            # Get current profit change
+            currentProfitChange = currentProfit - previousMonthProfit
+
+            totalProfitChange = totalProfitChange + currentProfitChange
+
+            # Calculate greatest increase
+            if currentProfitChange > greatestIncrease["amount"]:
+                greatestIncrease["date"] = row[0]
+                greatestIncrease["amount"] = currentProfitChange
+
+            # Calculate greatest decrease
+            if currentProfitChange < greatestDecrease["amount"]:
+                greatestDecrease["date"] = row[0]
+                greatestDecrease["amount"] = currentProfitChange
 
         # Set currentProfit to previousMonthProfit for next iteration  
         previousMonthProfit = currentProfit
 
         totalMonths = totalMonths + 1
 
-        # Calculate greatest increase
+def printResults(resultsFile, result):
+    print(result)
+    resultsFile.write(result + "\n")
 
-        # Calculate greatest decrease
-
-
-
-
-
-
-
-    print("Financial Analysis")
-    print("-" * 25)
-    print("Total Months: " + str(totalMonths))
-    print("Total: $" + str(netProfit))
-    print("Average Change: ${:.2f}".format(totalProfitChange / (totalMonths - 1)))
-    print("Greatest Increase in Profits: ")
-    print("Greatest Increase in Profits: ")
+with open("Results.txt", "w") as resultsFile:
+    printResults(resultsFile, "Financial Analysis")
+    printResults(resultsFile, "-" * 25)
+    printResults(resultsFile, "Total Months: " + str(totalMonths))
+    printResults(resultsFile, "Total: $" + str(netProfit))
+    printResults(resultsFile, "Average Change: ${:.2f}".format(totalProfitChange / (totalMonths - 1)))
+    printResults(resultsFile, "Greatest Increase in Profits: {} (${})".format(greatestIncrease["date"], greatestIncrease["amount"]))
+    printResults(resultsFile, "Greatest Decrease in Profits: {} (${})".format(greatestDecrease["date"], greatestDecrease["amount"]))
