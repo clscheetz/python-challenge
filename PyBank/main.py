@@ -67,8 +67,8 @@ def printResults(resultsFile, result):
 with open("Results.txt", "w") as resultsFile:
     printResults(resultsFile, "Financial Analysis")
     printResults(resultsFile, "-" * 25)
-    printResults(resultsFile, "Total Months: " + str(totalMonths))
-    printResults(resultsFile, "Total: $" + str(netProfit))
-    printResults(resultsFile, "Average Change: ${:.2f}".format(totalProfitChange / (totalMonths - 1)))
-    printResults(resultsFile, "Greatest Increase in Profits: {} (${})".format(greatestIncrease["date"], greatestIncrease["amount"]))
-    printResults(resultsFile, "Greatest Decrease in Profits: {} (${})".format(greatestDecrease["date"], greatestDecrease["amount"]))
+    printResults(resultsFile, f"Total Months: {totalMonths}")
+    printResults(resultsFile, f"Total: ${netProfit:,}")
+    printResults(resultsFile, f"Average Change: ${(totalProfitChange / (totalMonths - 1)):.2f}")
+    printResults(resultsFile, f"Greatest Increase in Profits: {greatestIncrease['date']} (${greatestIncrease['amount']:,})")
+    printResults(resultsFile, f"Greatest Decrease in Profits: {greatestDecrease['date']} (${greatestDecrease['amount']:,})")
