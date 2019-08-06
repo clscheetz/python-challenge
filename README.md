@@ -1,0 +1,1 @@
+Scripts must be executed from the base of the repository in order for the csv to be read.
